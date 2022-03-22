@@ -1,0 +1,23 @@
+[
+    {
+        "name": "GCC 7.2.1 for Arm Embedded Processors",
+        "compilers": {
+            "C": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc",
+            "CXX": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-g++"
+        }
+    },
+    {
+        "name": "GCC 9.2.1 for Arm Embedded Processors",
+        "compilers": {
+            "C": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/gcc-arm-none-eabi-9-2019-q4-major/bin/arm-none-eabi-gcc",
+            "CXX": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/gcc-arm-none-eabi-9-2019-q4-major/bin/arm-none-eabi-g++"
+        }
+    },
+    {
+        "name": "TI ARM C/C++ Compiler v20.2.5.LTS",
+        "compilers": {
+            "C": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl",
+            "CXX": "${env:HOME}/ti/ccs1110/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl"
+        }
+    }
+]

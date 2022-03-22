@@ -1,0 +1,68 @@
+{
+    "version": 4,
+    "env": {
+        "CCS_IDE_VER": "ccs1110",
+        "CCS_COMPILER_VER": "ti-cgt-arm_20.2.5.LTS",
+        "ProjectIncludes": [
+            // Libray Paths
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/AUTOSAR31",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx/support/ti",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/lib",
+            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/",
+            // Project Include Paths
+            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178",
+            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
+            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/app",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/app/tasks",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/include",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/portable/CCS/ARM_CM4F",
+            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/portable/MemMang"
+        ],
+        "ProjectDefines": [
+            "DEVICE_CONFIGURATION_ID=Cortex M.TM4C123GH6PM",
+            "DEVICE_CORE_ID=",
+            "DEVICE_ENDIANNESS=little",
+            "OUTPUT_FORMAT=ELF",
+            "LINKER_COMMAND_FILE=tm4c123gh6pm.cmd",
+            "RUNTIME_SUPPORT_LIBRARY=libc.a",
+            "CCS_MBS_VERSION=6.1.3",
+            "PRODUCTS=",
+            "PRODUCT_MACRO_IMPORTS={}",
+            "OUTPUT_TYPE=executable",
+            "ccs=\"ccs\"",
+            "__IEEE_LITTLE_ENDIAN",
+            "PART_TM4C123GH6PM",
+            "TARGET_IS_TM4C123_RB1",
+            "__cplusplus",
+            ""
+        ]
+    },
+    "configurations": [
+        {
+            "name": "Code Composer Studio C/C++ Project: TM4CFreeRTOS",
+            "includePath": [ "${ProjectIncludes}" ],
+            "defines": [ "${ProjectDefines}" ],
+            "compileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
+            // ^^^ Can be used in lieu of "includePath" & "defines" ^^^
+            "browse": {
+                "databaseFilename": "${workspaceRoot}/.vscode/browse.vc.db",
+                "limitSymbolsToIncludedHeaders": false,
+                // ^^^ true to only find headers via their paths, false to search for them in the paths provided below
+                "path": [ "${ProjectIncludes}" ]
+            },
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/bin/armcl",
+            "customConfigurationVariables": { // Set here and use ${cpptools:<var>} in tasks.json or launch.json
+                "CCS_CONFIGURATION": "Debug"
+            }
+        }
+    ]
+}

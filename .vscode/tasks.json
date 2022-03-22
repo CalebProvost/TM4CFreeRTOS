@@ -1,0 +1,158 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CCS: Clean",
+            "type": "shell",
+            "command": "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/eclipse/ccstudio",
+            "args": [
+                "-noSplash",
+                "-data", "${workspaceFolder}/../",
+                "-application", "com.ti.ccstudio.apps.projectBuild",
+                "-ccs.projects", "${workspaceFolderBasename}",
+                "-ccs.clean"
+            ]
+        },
+        {
+            "label": "CCS: Build",
+            "type": "shell",
+            "command": "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/eclipse/ccstudio",
+            "args": [
+                "-noSplash",
+                "-data", "${workspaceFolder}/../",
+                "-application", "com.ti.ccstudio.apps.projectBuild",
+                "-ccs.projects", "${workspaceFolderBasename}",
+                "-ccs.configuration", "${input:Configuration}",
+                "-ccs.listProblems",
+                // , "-ccs.args", "${workspaceFolder}/file",
+                "2>", "${workspaceFolder}/.vscode/${input:Configuration}_build.log",
+                "1>", "${workspaceFolder}/.vscode/${input:Configuration}_build.log"
+            ],
+        },
+        {
+            "label": "Clear Compile Commands",
+            "type": "shell",
+            "command": ">",
+            "args": ["${workspaceFolder}/.vscode/compile_commands.json"],
+        },
+        {
+            "label": "Generate Compile Commands",
+            "type": "shell",
+            "command": "cd",
+            "args": [
+                // Change directory to CCS's Configured Build Directory
+                "${workspaceFolder}/${input:Configuration}", "&&",
+                // Dry Run make all files
+                "make", "all", "--always-make", "--dry-run",
+                // Parse only commands for TI's Compiler
+                "|", "grep", "-w", "\"${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/tools/compiler/${input:CCS_COMPILER_VER}/bin/armcl\"",
+                // Parse results into JSON format
+                "|", "jq", "-nR", "'[inputs|{directory:\"\\\"${workspaceFolder}/${input:Configuration}\\\"\", command:., file: match(\" [^ ]+$\").string[1:]}]'",
+                // // Remove relative paths
+                // "|", "sed", "'s|\\\"file\\\": \\\"\\\\\"../|\\\"file\\\": \\\"\\\\\"${workspaceFolder}/|g'",
+                // "|", "sed", "'s|\\\\\\\"../|\\\\\\\"${workspaceFolder}/|g'",
+                // Direct output to compile_commands.json
+                ">", "${workspaceFolder}/.vscode/compile_commands.json"
+            ],
+            "dependsOn": [ "Clear Compile Commands" ],
+            "problemMatcher": [{
+                "pattern": [{
+                    "regexp": ".",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                }],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": ".",
+                }
+            }],
+            // "presentation": {
+            //     "echo": false,
+            //     "reveal": "silent",
+            //     "focus": false,
+            //     "panel": "shared",
+            //     "showReuseMessage": false,
+            //     "clear": false
+            // }
+        },
+        {
+            "label": "CCS: Clean & Build",
+            "dependsOn": [ "CCS: Clean", "CCS: Build" ],
+            "args": ["${input:GenCompileCmds}"],
+            "dependsOrder": "sequence",
+            "problemMatcher": ["$gcc"],
+            // "group": {
+            //     "kind": "build",
+            //     "isDefault": true
+            // }
+        },
+        {
+            "label": "GMake: Clean",
+            "type": "shell",
+            "command": "PROCS=$(nproc)",
+            "args": [
+                "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/utils/bin/gmake",
+                "-k",
+                "-C", "${workspaceFolder}/${input:Configuration}",
+                "-j", "${PROCS}",
+                "clean",
+                "-O"
+            ]
+        },
+        {
+            "label": "GMake: Build",
+            "type": "shell",
+            "command": "PROCS=$(nproc)",
+            "args": [
+                "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/utils/bin/gmake",
+                "-k",
+                "-C", "${workspaceFolder}/${input:Configuration}",
+                "-j", "${PROCS}",
+                "all",
+                "-O",
+                "2>", "${workspaceFolder}/.vscode/${input:Configuration}_build.log",
+                "1>", "${workspaceFolder}/.vscode/${input:Configuration}_build.log",
+            ]
+        },
+        {
+            "label": "GMake: Clean & Build",
+            "dependsOn": [ "Generate Compile Commands", "GMake: Clean", "GMake: Build", "Generate Compile Commands" ],
+            "dependsOrder": "sequence",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "Configuration",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "CCS_CONFIGURATION"
+        },
+        {
+            "id": "GenCompileCmds",
+            "type": "command",
+            "command": "workbench.action.tasks.runTask",
+            "args": "Generate Compile Commands"
+        },
+        {
+            "id": "CCS_IDE_VER",
+            "type": "pickString",
+            "description": "Select CCS Version",
+            "default": "ccs1110",
+            "options": ["ccs1010","ccs1110"]
+        },
+        {
+            "id": "CCS_COMPILER_VER",
+            "type": "pickString",
+            "description": "Select Compiler",
+            "default": "ti-cgt-arm_20.2.5.LTS",
+            "options": ["ti-cgt-arm_20.2.5.LTS","ti-cgt-arm_20.2.1.LTS"]
+        }
+    ]
+}

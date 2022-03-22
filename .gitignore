@@ -1,0 +1,15 @@
+# Project Definitions
+.settings/
+.launches/
+.project
+.projectFiles/
+.cproject
+.ccsproject
+.vscode/
+
+# Compilation Output Directories
+Debug/
+Release/
+
+# Ignore CCS imported subdirectory
+ccs_workspace/
