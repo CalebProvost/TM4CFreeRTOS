@@ -4,7 +4,7 @@
         {
             "label": "CCS: Clean",
             "type": "shell",
-            "command": "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/eclipse/ccstudio",
+            "command": "${input:ccsPath}/${input:ccsVer}/ccs/eclipse/ccstudio",
             "args": [
                 "-noSplash",
                 "-data", "${workspaceFolder}/../",
@@ -16,7 +16,7 @@
         {
             "label": "CCS: Build",
             "type": "shell",
-            "command": "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/eclipse/ccstudio",
+            "command": "${input:ccsPath}/${input:ccsVer}/ccs/eclipse/ccstudio",
             "args": [
                 "-noSplash",
                 "-data", "${workspaceFolder}/../",
@@ -45,7 +45,7 @@
                 // Dry Run make all files
                 "make", "all", "--always-make", "--dry-run",
                 // Parse only commands for TI's Compiler
-                "|", "grep", "-w", "\"${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/tools/compiler/${input:CCS_COMPILER_VER}/bin/armcl\"",
+                "|", "grep", "-w", "\"${input:ccsPath}/${input:ccsVer}/ccs/tools/compiler/${input:compilerVer}/bin/armcl\"",
                 // Parse results into JSON format
                 "|", "jq", "-nR", "'[inputs|{directory:\"\\\"${workspaceFolder}/${input:Configuration}\\\"\", command:., file: match(\" [^ ]+$\").string[1:]}]'",
                 // // Remove relative paths
@@ -93,7 +93,7 @@
             "type": "shell",
             "command": "PROCS=$(nproc)",
             "args": [
-                "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/utils/bin/gmake",
+                "${input:ccsPath}/${input:ccsVer}/ccs/utils/bin/gmake",
                 "-k",
                 "-C", "${workspaceFolder}/${input:Configuration}",
                 "-j", "${PROCS}",
@@ -106,7 +106,7 @@
             "type": "shell",
             "command": "PROCS=$(nproc)",
             "args": [
-                "${env:HOME}/ti/${input:CCS_IDE_VER}/ccs/utils/bin/gmake",
+                "${input:ccsPath}/${input:ccsVer}/ccs/utils/bin/gmake",
                 "-k",
                 "-C", "${workspaceFolder}/${input:Configuration}",
                 "-j", "${PROCS}",
@@ -129,30 +129,34 @@
     ],
     "inputs": [
         {
-            "id": "Configuration",
-            "type": "command",
-            "command": "cpptools.activeConfigCustomVariable",
-            "args": "CCS_CONFIGURATION"
-        },
-        {
             "id": "GenCompileCmds",
             "type": "command",
             "command": "workbench.action.tasks.runTask",
             "args": "Generate Compile Commands"
         },
         {
-            "id": "CCS_IDE_VER",
-            "type": "pickString",
-            "description": "Select CCS Version",
-            "default": "ccs1110",
-            "options": ["ccs1010","ccs1110"]
+            "id": "Configuration",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "CCS_CONFIGURATION"
         },
         {
-            "id": "CCS_COMPILER_VER",
-            "type": "pickString",
-            "description": "Select Compiler",
-            "default": "ti-cgt-arm_20.2.5.LTS",
-            "options": ["ti-cgt-arm_20.2.5.LTS","ti-cgt-arm_20.2.1.LTS"]
+            "id": "ccsPath",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "CCS_PATH"
+        },        
+        {
+            "id": "ccsVer",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "CCS_IDE_VER"
+        },        
+        {
+            "id": "compilerVer",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "CCS_COMPILER_VER"
         }
     ]
 }

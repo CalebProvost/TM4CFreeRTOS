@@ -1,28 +1,30 @@
 {
     "version": 4,
     "env": {
+        "CCS_PATH": "${env:HOME}/ti",
         "CCS_IDE_VER": "ccs1110",
         "CCS_COMPILER_VER": "ti-cgt-arm_20.2.5.LTS",
+        "TIVA_LIB_PATH": "${env:HOME}/ti/TivaWare_C_Series-2.1.4.178",
         "ProjectIncludes": [
             // Libray Paths
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/AUTOSAR31",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx/support/ti",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/lib",
-            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178/driverlib/ccs/Debug/",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/AUTOSAR31",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx/support/ti",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/lib",
+            "${TIVA_LIB_PATH}/driverlib/ccs/Debug/",
             // Project Include Paths
-            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178",
-            "${env:HOME}/Downloads/TI/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
-            "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/app",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/app/tasks",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/include",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/portable/CCS/ARM_CM4F",
-            "${env:HOME}/2TB/repos/tm4c/TM4CFreeRTOS/FreeRTOS/portable/MemMang"
+            "${TIVA_LIB_PATH}",
+            "${TIVA_LIB_PATH}/examples/boards/ek-tm4c123gxl",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include",
+            "${CCS_PATH}/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/include/libcxx",
+            "${workspaceRoot}/app",
+            "${workspaceRoot}/app/tasks",
+            "${workspaceRoot}/FreeRTOS",
+            "${workspaceRoot}/FreeRTOS/include",
+            "${workspaceRoot}/FreeRTOS/portable/CCS/ARM_CM4F",
+            "${workspaceRoot}/FreeRTOS/portable/MemMang"
         ],
         "ProjectDefines": [
             "DEVICE_CONFIGURATION_ID=Cortex M.TM4C123GH6PM",
@@ -61,7 +63,11 @@
             "intelliSenseMode": "gcc-arm",
             "compilerPath": "${env:HOME}/ti/${CCS_IDE_VER}/ccs/tools/compiler/${CCS_COMPILER_VER}/bin/armcl",
             "customConfigurationVariables": { // Set here and use ${cpptools:<var>} in tasks.json or launch.json
-                "CCS_CONFIGURATION": "Debug"
+                "CCS_CONFIGURATION": "Debug",
+                "CCS_PATH": "${CCS_PATH}",
+                "TIVA_LIB_PATH": "${TIVA_LIB_PATH}",
+                "CCS_IDE_VER": "${CCS_IDE_VER}",
+                "CCS_COMPILER_VER": "${CCS_COMPILER_VER}"
             }
         }
     ]
