@@ -26,7 +26,8 @@ extern TaskHandle_t g_statTaskHandle;
 extern "C"
 {
 #endif
-    typedef struct {
+    typedef struct
+    {
         uint32_t wait;
         uint32_t period;
     } taskStats_t;

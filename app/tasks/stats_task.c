@@ -206,7 +206,7 @@ void start_stats(uint32_t msWait, uint32_t samplePeriod)
     taskStats_t* arg = (taskStats_t*)malloc(sizeof(taskStats_t));
     arg->wait = msWait;
     arg->period = samplePeriod;
-    
+
     // Create and start stats task
     sync_stats_task = xSemaphoreCreateBinary();
     // 2048 is not enough

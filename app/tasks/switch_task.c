@@ -151,6 +151,6 @@ uint32_t SwitchTaskInit(void)
     // Create the switch task.
     //
     ret = xTaskCreate(SwitchTask, "Switch", tskStackSz_Switch, NULL, tskPriority_Switch, NULL);
-    
+
     return (ret != pdTRUE) ? 1 : 0;
 }

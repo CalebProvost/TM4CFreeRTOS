@@ -212,6 +212,6 @@ uint32_t LEDTaskInit(void)
     // Create the LED task.
     //
     ret = xTaskCreate(LEDTask, "LED", tskStackSz_LED, NULL, tskPriority_LED, NULL);
-    
+
     return (ret != pdTRUE) ? 1 : 0;
 }

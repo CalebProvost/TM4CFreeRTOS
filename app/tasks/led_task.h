@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #if SEMAPHORE_WRAP_PRINTF
-    extern SemaphoreHandle_t g_printSemaphore;
+extern SemaphoreHandle_t g_printSemaphore;
 #endif
 
 #ifdef __cplusplus
