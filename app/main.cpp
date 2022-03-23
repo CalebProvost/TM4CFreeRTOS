@@ -1,3 +1,5 @@
+#define INCLUDE_PRINT_STATS_TASK 1 // FreeRTOS task status printing
+
 // Standard Libraries
 #include <stdint.h>
 #include <string.h>
@@ -13,15 +15,18 @@
 #include "utils/uartstdio.h"
 
 // FreeRTOS
-#include "tasks_common.h"
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "semphr.h"
 #include "task.h"
+#include "tasks_common.h"
 
 // Project Tasks
 #include "led_task.h"
 #include "switch_task.h"
+#if INCLUDE_PRINT_STATS_TASK
+#    include "stats_task.h"
+#endif
 
 SemaphoreHandle_t g_printSemaphore;
 
@@ -46,12 +51,18 @@ int main(void)
 {
     // Initialize FreeRTOS and start the initial set of tasks.
     // Set the clocking to run at 50 MHz from the PLL.
-    ROM_SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
+    ROM_SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
     // Initialize the UART and configure it for 115,200, 8-N-1 operation.
     ConfigureUART();
 
     // Create a mutex to guard the UART.
     g_printSemaphore = xSemaphoreCreateMutex();
+
+#if INCLUDE_PRINT_STATS_TASK
+    // 900 ms print intervals, 100 ms task sampling period
+    // can use xTaskNotifyGive(g_statTaskHandle) to trigger early printing if STAT_TASK_USES_NOTIFY is true
+    start_stats(900, 100);
+#endif
 
     // Create the LED task.
     if (LEDTaskInit() != 0)
@@ -77,6 +88,9 @@ int main(void)
 
     // Start the scheduler.  This should not return.
     printf("Starting FreeRTOS Scheduler\n");
+#if INCLUDE_PRINT_STATS_TASK
+    HibernateRTCSet(0);
+#endif
     vTaskStartScheduler();
     // In case the scheduler returns for some reason, print an error and loop forever.
     printf("ERROR! FreeRTOS Scheduler returned!\n");

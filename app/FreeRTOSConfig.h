@@ -121,5 +121,24 @@
         for (;;)                                                                                                       \
             ;                                                                                                          \
     }
+#define configGENERATE_RUN_TIME_STATS 1
+#define configGENERATE_RUN_TIME_STATS_SUBSECONDS 0 // time stats increment in TI sub seconds (1/32768 of a second)
+#if configGENERATE_RUN_TIME_STATS
+#    include "driverlib/hibernate.h"
+#    include "driverlib/rom.h"
+#    define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()                                                                   \
+        ROM_FPULazyStackingEnable();                                                                                   \
+        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_HIBERNATE);                                                           \
+        HibernateEnableExpClk(ROM_SysCtlClockGet());                                                                   \
+        HibernateClockConfig(HIBERNATE_OSC_LOWDRIVE);                                                                  \
+        HibernateRTCDisable();                                                                                         \
+        HibernateRTCSet(0);                                                                                            \
+        HibernateRTCEnable()
+#    if configGENERATE_RUN_TIME_STATS_SUBSECONDS
+#        define portGET_RUN_TIME_COUNTER_VALUE ulTotalRunTime + HibernateRTCSSGet
+#    else
+#        define portGET_RUN_TIME_COUNTER_VALUE ulTotalRunTime + HibernateRTCGet
+#    endif // configGENERATE_RUN_TIME_STATS_SUBSECONDS
+#endif // configGENERATE_RUN_TIME_STATS
 
 #endif /* FREERTOS_CONFIG_H */
